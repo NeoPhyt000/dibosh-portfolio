@@ -10,7 +10,7 @@ export const me = {
   intro:
     "Hi, I'm Dibosh Sarker, a Full Stack Web Developer passionate about building modern and scalable web applications. I work with React, Next.js, TypeScript, and MongoDB to turn ideas into functional digital experiences. I'm always eager to learn new technologies and take on new challenges.",
   photo: "profile.png", // put your photo at public/profile.png
-  resume: "/resume.pdf", // put your resume at public/resume.pdf
+  resume: "/dibosh_sarker_cv.pdf", // put your resume at public/dibosh_sarker_cv.pdf
   email: "diboshsarker45@gmail.com",
   phone: "+8801616661468",
   whatsapp: "8801732192920",
