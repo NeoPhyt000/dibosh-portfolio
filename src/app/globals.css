@@ -1,0 +1,162 @@
+@import "tailwindcss";
+
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
+/* Colours: change these two blocks to re-theme the whole site. */
+:root {
+  --bg: #070b16;
+  --card: #0f1526;
+  --line: #1f2840;
+  --fg: #e8ebf5;
+  --muted: #97a1bd;
+  --primary: #6366f1;
+  --accent: #22d3ee;
+  color-scheme: dark;
+}
+[data-theme="light"] {
+  --bg: #f6f7fb;
+  --card: #ffffff;
+  --line: #e2e6f0;
+  --fg: #0f172a;
+  --muted: #566079;
+  --primary: #4f46e5;
+  --accent: #0e7490;
+  color-scheme: light;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-poppins);
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-spin-slow: spin 14s linear infinite;
+  --animate-rise: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-blink: blink 1s steps(1) infinite;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--fg);
+  background:
+    radial-gradient(60rem 40rem at 90% -10%, color-mix(in srgb, var(--primary) 22%, transparent), transparent 60%),
+    radial-gradient(50rem 36rem at -15% 15%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%),
+    var(--bg);
+  background-repeat: no-repeat;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-poppins), sans-serif;
+  letter-spacing: -0.02em;
+}
+
+section {
+  scroll-margin-top: 5.5rem;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--primary) 45%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Shared building blocks (Tailwind v4 custom utilities, so !p-0, hover: etc. work on them). */
+@utility card {
+  @apply rounded-2xl border border-line bg-card/80 p-6 backdrop-blur transition duration-300;
+}
+@utility card-hover {
+  @apply hover:-translate-y-1 hover:border-primary/60 hover:shadow-[0_18px_50px_-20px] hover:shadow-primary/50;
+}
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition duration-200 active:scale-[0.97];
+}
+@utility btn-primary {
+  @apply btn bg-gradient-to-r from-primary to-accent text-white shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:brightness-110;
+}
+@utility btn-ghost {
+  @apply btn border border-line bg-card/60 text-fg hover:border-primary/70 hover:bg-card;
+}
+@utility chip {
+  @apply inline-flex items-center gap-2 rounded-full border border-line bg-bg/60 px-3 py-1.5 text-sm text-fg;
+}
+@utility gradient-text {
+  @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+}
+@utility field {
+  @apply w-full rounded-xl border border-line bg-bg/60 px-4 py-3 text-sm text-fg placeholder:text-muted/70 transition focus:border-primary focus:outline-none;
+}
+
+/* Faint grid behind the hero, fading out at the edges. */
+.grid-bg {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--fg) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--fg) 7%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
+}
+
+@keyframes float {
+  50% { transform: translateY(-12px); }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(32px); }
+}
+@keyframes grow {
+  from { transform: scaleX(0); }
+}
+
+.progress {
+  display: none;
+}
+
+/* Scroll effects are pure CSS: browsers without support simply show everything. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 30%;
+    }
+    .bar {
+      transform-origin: left;
+      animation: grow linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 80%;
+    }
+    .progress {
+      display: block;
+      transform-origin: left;
+      animation: grow linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
